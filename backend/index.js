@@ -3,7 +3,6 @@ import cors from 'cors';
 
 
 import  dbConnection  from './database/dbConnection.js';
-import User from './model/User.js'
 import authRoute from "./routes/authRoute.js";
 import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
@@ -14,8 +13,6 @@ import errorMiddleware from './middelwares/errorMiddelwear.js';
 import bcrypt from 'bcryptjs';
 import helmet from 'helmet';
 import xssClean from 'xss-clean';
-
-import userAuth from './middelwares/authMiddelware.js';
 dotenv.config();
 
 
@@ -32,7 +29,8 @@ const jwtSecret = process.env.JWT_SECRET_KEY || "frffdhhgffddsfghhjjkkjiuytrewsg
 
 app.use(cors({
     credentials: true,
-    origin: 'http://localhost:5173'
+    origin: 'http://localhost:5173',
+    methods:["GET","POST","PUT","DELETE","PATCH"]
 }));
 
 
@@ -75,7 +73,7 @@ app.use(errorMiddleware);
 // });
 
 
-await dbConnection();
 app.listen(4000, () => {
     console.log('Server is running on port 4000');
+    dbConnection();
 });
